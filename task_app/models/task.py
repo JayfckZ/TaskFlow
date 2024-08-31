@@ -1,4 +1,5 @@
 from django.db import models
+from task_app.models.project import Project
 from task_app.models.user import User
 
 
@@ -10,7 +11,8 @@ class Task(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICE, default="P")
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tarefas")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
