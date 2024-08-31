@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>TaskFlow</title>
+
+    <style>
+        aside.bg-primary {
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        main {
+            min-height: 100vh;
+        }
+        .aside-link {
+            transition: all 0.2s;
+        }
+        .aside-link:hover {
+            background-color: #2d81ff;
+            transition: all 0.2s;
+        }
+        .nav-link.active {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="row m-0">
+    <aside class="col-lg-2 bg-primary text-light sticky-lg-top">
+        <div class="container">
+            <header class="d-flex align-items-end justify-content-center mt-3">
+                <i class="bi bi-clipboard2-data h2 m-0"></i>
+                <h1 class="h3 m-0">TaskFlow</h1>
+            </header>
+            <hr>
+            <div>
+                <a data-bs-toggle="collapse" href="#projetos" class="h5 p-1 mb-1 text-decoration-none dropdown-toggle d-flex align-items-center justify-content-between aside-link" role="button">Projetos</a>
+                <ul id="projetos" class="collapse list-group list-group-flush text-light mb-4">
+                    <li class="list-group-item bg-transparent text-light">
+                        <a data-bs-toggle="tab" data-bs-target="#novoprojeto" class="nav-link text-nowrap" aria-current="page" href="#">+ Novo projeto</a>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light">
+                        <a data-bs-toggle="tab" data-bs-target="#inicio" class="nav-link active" aria-current="page" href="#"><i class="bi bi-house-door me-1"></i>Início</a>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light">
+                        <a data-bs-toggle="tab" data-bs-target="#projeto1" class="nav-link" aria-current="page" href="#">Projeto 1</a>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light">
+                        <a data-bs-toggle="tab" data-bs-target="#projeto2" class="nav-link" aria-current="page" href="#">Projeto 2</a>
+                    </li>
+                    <li class="list-group-item bg-transparent text-light">
+                        <a data-bs-toggle="tab" data-bs-target="#projeto3" class="nav-link" aria-current="page" href="#">Projeto 3</a>
+                    </li>
+                </ul>
+                <a data-bs-toggle="collapse" href="#usuarios" class="h5 p-1 mb-1 text-decoration-none dropdown-toggle d-flex align-items-center justify-content-between aside-link" role="button">Usuários</a>
+                    <ul id="usuarios" class="collapse list-group list-group-flush text-light mb-4">
+                        <li class="list-group-item bg-transparent text-light">User 1</li>
+                        <li class="list-group-item bg-transparent text-light">User 2</li>
+                        <li class="list-group-item bg-transparent text-light">User 3</li>
+                    </ul>
+            </div>
+        </div>
+    </aside>
+    <main class="col-lg bg-light py-4">
+        <div class="container tab-content">
+            <div class="tab-pane active" id="inicio">
+                <h2>Bem-vindo ao TaskFlow!</h2>
+                <p>
+                    O TaskFlow é a solução definitiva para gerenciar seus projetos e tarefas de forma eficiente e organizada. Nossa plataforma foi desenvolvida pensando nas necessidades de startups e empresas que buscam melhorar o acompanhamento e a execução das atividades do dia a dia.
+                </p>
+                <h3>Funcionalidades</h3>
+                <ul>
+                    <li><strong>Criação de Tarefas:</strong> Adicione novas tarefas com facilidade, defina prazos e atribua responsáveis</li>
+                    <li><strong>Gerenciamento de Status:</strong> Acompanhe o progresso das tarefas com status claros como "Pendente" e "Concluída".</li>
+                    <li><strong>Edição e Exclusão:</strong> Mantenha suas tarefas sempre atualizadas e exclua aquelas que já não são necessárias.</li>
+                </ul>
+                <h3>Por que usar o TaskFlow?</h3>
+                <ul>
+                    <li><strong>Produtividade:</strong> Aumente a eficiência da sua equipe com uma plataforma intuitiva e funcional.</li>
+                    <li><strong>Organização:</strong> Centralize todas as tarefas e projetos em um só lugar, garantindo que nada seja esquecido.</li>
+                    <li><strong>Controle:</strong> Monitore as atividades da sua equipe e assegure que os prazos sejam cumpridos.</li>
+                </ul>
+                <h3>Comece agora!</h3>
+                <p>
+                    Faça login para acessar suas tarefas e veja como o TaskFlow pode transformar a maneira como você gerencia seus projetos.
+                </p>
+            </div>
+            <div class="tab-pane" id="novoprojeto">
+                <h1>Novo projeto</h1>
+            </div>
+            <div class="tab-pane" id="projeto1">
+                <h2>Projeto 1</h2>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Projetos</li>
+                        <li class="breadcrumb-item" aria-current="page">Projeto 1</li>
+                    </ol>
+                </nav>
+                <button class="btn btn-success">Adicionar tarefa</button>
+                <h3 class="mt-4">Tarefas:</h3>
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Título da tarefa</h5>
+                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
+                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
+                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Título da tarefa</h5>
+                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
+                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
+                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Título da tarefa</h5>
+                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
+                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
+                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="col-3 sticky-lg-top">
+                        <h5>Status:</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="todas" value="todas" checked>
+                            <label class="form-check-label" for="todas">
+                                Todas
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="pendentes" value="pendentes">
+                            <label class="form-check-label" for="pendentes">
+                                Pendentes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="concluidas" value="concluidas">
+                            <label class="form-check-label" for="concluidas">
+                                Concluídas
+                            </label>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+            <div class="tab-pane" id="projeto2">
+                <h1>Projeto 2</h1>
+            </div>
+            <div class="tab-pane" id="projeto3">
+                <h1>Projeto 3</h1>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
