@@ -9,7 +9,9 @@ def home(request):
         "-date"
     )  # {project.name: Task.objects.filter(project=project) for project in projects}
     users = User.objects.all().order_by("name")
-    return render(request, "home.html", {"projects": projects, "tasks": tasks, "users": users})
+    return render(
+        request, "home.html", {"projects": projects, "tasks": tasks, "users": users}
+    )
 
 
 def create_project(request):
@@ -34,4 +36,10 @@ def add_task(request, project_id):
             user=request.user,
             project=project,
         )
+    return redirect("home")
+
+
+def delete_task(request,task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.delete()
     return redirect("home")
