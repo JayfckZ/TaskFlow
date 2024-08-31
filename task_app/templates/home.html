@@ -15,6 +15,9 @@
         main {
             min-height: 100vh;
         }
+        textarea {
+            resize: none;
+        }
         .aside-link {
             transition: all 0.2s;
         }
@@ -44,21 +47,17 @@
                     <li class="list-group-item bg-transparent text-light">
                         <a data-bs-toggle="tab" data-bs-target="#inicio" class="nav-link active" aria-current="page" href="#"><i class="bi bi-house-door me-1"></i>Início</a>
                     </li>
+                    {% for project in projects %}
                     <li class="list-group-item bg-transparent text-light">
-                        <a data-bs-toggle="tab" data-bs-target="#projeto1" class="nav-link" aria-current="page" href="#">Projeto 1</a>
+                        <a data-bs-toggle="tab" data-bs-target="#projeto{{ project.id }}" class="nav-link" aria-current="page" href="#">{{ project.name }}</a>
                     </li>
-                    <li class="list-group-item bg-transparent text-light">
-                        <a data-bs-toggle="tab" data-bs-target="#projeto2" class="nav-link" aria-current="page" href="#">Projeto 2</a>
-                    </li>
-                    <li class="list-group-item bg-transparent text-light">
-                        <a data-bs-toggle="tab" data-bs-target="#projeto3" class="nav-link" aria-current="page" href="#">Projeto 3</a>
-                    </li>
+                    {% endfor %}
                 </ul>
                 <a data-bs-toggle="collapse" href="#usuarios" class="h5 p-1 mb-1 text-decoration-none dropdown-toggle d-flex align-items-center justify-content-between aside-link" role="button">Usuários</a>
                     <ul id="usuarios" class="collapse list-group list-group-flush text-light mb-4">
-                        <li class="list-group-item bg-transparent text-light">User 1</li>
-                        <li class="list-group-item bg-transparent text-light">User 2</li>
-                        <li class="list-group-item bg-transparent text-light">User 3</li>
+                        {% for user in users %}
+                            <li class="list-group-item bg-transparent text-light">{{ user.name }}</li>
+                        {% endfor %}
                     </ul>
             </div>
         </div>
@@ -88,85 +87,135 @@
                 </p>
             </div>
             <div class="tab-pane" id="novoprojeto">
-                <h1>Novo projeto</h1>
+                <h2>Novo projeto</h2>
+                <form method="POST" action="{% url 'create_project' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nomeprojeto" class="form-label">Nome do Projeto:</label>
+                        <input type="text" class="form-control" name="name" id="nomeprojeto" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Criar projeto</button>
+                    <button type="reset" class="btn btn-outline-danger">Limpar</button>
+                </form>
             </div>
-            <div class="tab-pane" id="projeto1">
-                <h2>Projeto 1</h2>
+            {% for project in projects %}
+            <div class="tab-pane" id="projeto{{ project.id }}">
+                <h2>{{ project.name }}</h2>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">Projetos</li>
-                        <li class="breadcrumb-item" aria-current="page">Projeto 1</li>
+                        <li class="breadcrumb-item" aria-current="page">{{ project.name }}</li>
                     </ol>
                 </nav>
-                <button class="btn btn-success">Adicionar tarefa</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtarefa{{ project.id }}">Adicionar tarefa</button>
+
+                <div class="modal fade" id="addtarefa{{ project.id }}" tabindex="-1" ria-hidden="true">
+                    <div class="modal-dialog">
+                        <form class="modal-content" method="POST" action="{% url 'add_task' project.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Nova tarefa</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nometarefa{{ project.id }}" class="form-label">Nome da Tarefa:</label>
+                                    <input type="text" class="form-control" name="title" id="nometarefa{{ project.id }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="descricao{{ project.id }}" class="form-label">Descrição:</label>
+                                    <textarea class="form-control" name="description" id="descricao{{ project.id }}" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Adicionar tarefa</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
                 <h3 class="mt-4">Tarefas:</h3>
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-10">
                         <div class="row">
-                            <div class="col-6 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título da tarefa</h5>
-                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
-                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
-                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
+                            {% for task in tasks %}
+                                {% if task.project.id == project.id %}
+                                <div class="col-6 mb-4 task-item" data-status="{{ task.status }}">
+                                    <div class="card">
+                                        <div class="card-body d-grid">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <h5 class="card-title m-0">{{ task.title }}</h5>
+                                                <div>
+                                                    <a href="#" class="text-decoration-none btn btn-outline-warning me-2 p-1">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a href="#" class="text-decoration-none btn btn-outline-danger p-1">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <p class="card-text m-0">{{ task.description }}</p>
+                                            <p class="small card-text text-secondary">Tarefa criada por {{ task.user.name }} em {{ task.date|date:"d/m/Y à\s H:i" }}</p>
+                                            <p class="card-text align-self-end">Status: 
+                                                <span class="badge bg-{% if task.status == 'P' %}warning{% else %}success{% endif %}">{{ task.get_status_display }}</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título da tarefa</h5>
-                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
-                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
-                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Título da tarefa</h5>
-                                        <p class="card-text m-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia unde provident recusandae ex ea, deserunt ipsum sit, soluta repellat accusantium pariatur ratione maxime atque tempora est laudantium, rerum aspernatur laborum.</p>
-                                        <p class=" card-text text-secondary">Tarefa criada em 31/08/2024 às 14:59</p>
-                                        <p class="card-text">Status: <span class="badge bg-success">Concluída</span></p>
-                                    </div>
-                                </div>
-                            </div>
+                                {% endif %}
+                            {% empty %}
+                            <p>Nenhuma tarefa encontrada.</p>
+                            {% endfor %}
                         </div>
                     </div>
-                    <aside class="col-3 sticky-lg-top">
+                    <aside class="col-2 sticky-lg-top">
                         <h5>Status:</h5>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" id="todas" value="todas" checked>
-                            <label class="form-check-label" for="todas">
+                            <input class="form-check-input" type="radio" name="status{{ project.id }}" id="todas{{ project.id }}" value="todas" checked>
+                            <label class="form-check-label" for="todas{{ project.id }}">
                                 Todas
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" id="pendentes" value="pendentes">
-                            <label class="form-check-label" for="pendentes">
+                            <input class="form-check-input" type="radio" name="status{{ project.id }}" id="pendentes{{ project.id }}" value="pendentes">
+                            <label class="form-check-label" for="pendentes{{ project.id }}">
                                 Pendentes
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status" id="concluidas" value="concluidas">
-                            <label class="form-check-label" for="concluidas">
+                            <input class="form-check-input" type="radio" name="status{{ project.id }}" id="concluidas{{ project.id }}" value="concluidas">
+                            <label class="form-check-label" for="concluidas{{ project.id }}">
                                 Concluídas
                             </label>
                         </div>
                     </aside>
                 </div>
             </div>
-            <div class="tab-pane" id="projeto2">
-                <h1>Projeto 2</h1>
-            </div>
-            <div class="tab-pane" id="projeto3">
-                <h1>Projeto 3</h1>
-            </div>
+            {% endfor %}
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioButtons = document.querySelectorAll('.form-check-input')
+            const taskItems = document.querySelectorAll('.task-item')
+        
+            radioButtons.forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    const status = this.value
+        
+                    taskItems.forEach(function(item) {
+                        if (status === 'todas' || item.dataset.status === status.charAt(0).toUpperCase()) {
+                            item.style.display = 'flex'
+                        } else {
+                            item.style.display = 'none'
+                        }
+                    })
+                })
+            })
+        })
+    </script>
 </body>
 </html>
