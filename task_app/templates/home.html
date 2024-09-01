@@ -18,6 +18,9 @@
         textarea {
             resize: none;
         }
+        .task-item {
+            display: flex;
+        }
         .aside-link {
             transition: all 0.2s;
         }
@@ -150,8 +153,10 @@
                                                     <a href="#" class="text-decoration-none btn btn-outline-warning me-2 p-1">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
-                                                    <a href="#" class="text-decoration-none btn btn-outline-danger p-1">
-                                                        <i class="bi bi-trash"></i>
+                                                    <a href="{% url 'delete_task' task.id %}" 
+                                                        class="text-decoration-none btn btn-outline-danger p-1" 
+                                                        onclick="return confirm('Você tem certeza que deseja excluir essa tarefa?');">
+                                                            <i class="bi bi-trash"></i>
                                                     </a>
                                                 </div>
                                             </div>
