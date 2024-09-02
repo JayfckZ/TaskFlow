@@ -151,7 +151,14 @@
                         <li class="breadcrumb-item" aria-current="page">{{ project.name }}</li>
                     </ol>
                 </nav>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtarefa{{ project.id }}">Adicionar tarefa</button>
+                <div class="d-flex">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtarefa{{ project.id }}">Adicionar tarefa</button>
+                    <a href="{% url 'delete_project' project.id %}" 
+                        class="text-decoration-none btn btn-outline-danger ms-2" 
+                        onclick="return confirm('Você tem certeza que deseja excluir esse projeto?');" >
+                        Excluir projeto
+                    </a>
+                </div>
 
                 <div class="modal fade" id="addtarefa{{ project.id }}" tabindex="-1" ria-hidden="true">
                     <div class="modal-dialog">
@@ -289,6 +296,25 @@
                         }
                     })
                 })
+            })
+
+            function checkTitleLength(input) {
+                const submitButtons = input.closest('form').querySelectorAll('button[type="submit"]')
+                const isValid = input.value.length <= 50
+
+                submitButtons.forEach(button => {
+                    button.disabled = !isValid
+                })
+            }
+
+            const taskNameInputs = document.querySelectorAll('input[name="title"]')
+
+            taskNameInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    checkTitleLength(input)
+                })
+
+                checkTitleLength(input)
             })
         })
     </script>
