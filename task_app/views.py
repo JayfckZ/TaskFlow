@@ -52,7 +52,7 @@ def logout_site(request):
 
 @login_required
 def home(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all().order_by("name")
     tasks = Task.objects.all().order_by(
         "-date"
     )  # {project.name: Task.objects.filter(project=project) for project in projects}
