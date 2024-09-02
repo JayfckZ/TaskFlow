@@ -151,9 +151,40 @@
                         <li class="breadcrumb-item" aria-current="page">{{ project.name }}</li>
                     </ol>
                 </nav>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtarefa{{ project.id }}">Adicionar tarefa</button>
+                <div class="d-flex">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addtarefa{{ project.id }}">Adicionar tarefa</button>
+                    <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#updateproject{{ project.id }}">Editar projeto</button>
+                    <a href="{% url 'delete_project' project.id %}" 
+                        class="text-decoration-none btn btn-outline-danger" 
+                        onclick="return confirm('Você tem certeza que deseja excluir esse projeto?');" >
+                        Excluir projeto
+                    </a>
+                </div>
 
-                <div class="modal fade" id="addtarefa{{ project.id }}" tabindex="-1" ria-hidden="true">
+                <div class="modal fade" id="updateproject{{ project.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form class="modal-content" method="POST" action="{% url 'update_project' project.id %}">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Editar projeto</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nomeprojeto{{ task.id }}" class="form-label">Nome do Projeto:</label>
+                                    <input type="text" class="form-control" value="{{ project.name }}" name="name" required>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary">Atualizar projeto</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addtarefa{{ project.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <form class="modal-content" method="POST" action="{% url 'add_task' project.id %}">
                             {% csrf_token %}
@@ -215,7 +246,7 @@
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
 
-                                                    <div class="modal fade" id="updatetask{{ task.id }}" tabindex="-1" ria-hidden="true">
+                                                    <div class="modal fade" id="updatetask{{ task.id }}" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <form class="modal-content" method="POST" action="{% url 'update_task' task.id %}">
                                                                 {% csrf_token %}
@@ -289,6 +320,25 @@
                         }
                     })
                 })
+            })
+
+            function checkTitleLength(input) {
+                const submitButtons = input.closest('form').querySelectorAll('button[type="submit"]')
+                const isValid = input.value.length <= 50
+
+                submitButtons.forEach(button => {
+                    button.disabled = !isValid
+                })
+            }
+
+            const taskNameInputs = document.querySelectorAll('input[name="title"]')
+
+            taskNameInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    checkTitleLength(input)
+                })
+
+                checkTitleLength(input)
             })
         })
     </script>

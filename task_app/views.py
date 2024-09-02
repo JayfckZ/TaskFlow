@@ -109,3 +109,22 @@ def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.delete()
     return redirect("home")
+
+
+@login_required
+def update_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == "POST":
+        project.name = request.POST.get("name")
+
+        project.save()
+        return redirect("home")
+    return redirect("home")
+
+
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    project.delete()
+    return redirect("home")
